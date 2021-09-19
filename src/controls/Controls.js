@@ -34,8 +34,8 @@ export default function Controls({
     canvas1X: {
       value: 0,
       step: 1,
-      min: 0,
-      max: 100,
+      min: -200,
+      max: 200,
       onChange: (value) => setQuery({ canvas1X: value }),
     },
 

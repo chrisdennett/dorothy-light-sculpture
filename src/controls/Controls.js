@@ -34,33 +34,38 @@ export default function Controls({
     canvas1X: {
       value: 0,
       step: 1,
-      min: -200,
-      max: 200,
+      min: -30,
+      max: 30,
       onChange: (value) => setQuery({ canvas1X: value }),
     },
 
-    redrawOptions: folder({
-      canvasWidth: {
-        value: 260,
-        step: 1,
-        min: 10,
-        max: 400,
-        onChange: (value) => setQuery({ canvasWidth: value }),
-      },
+    redrawOptions: folder(
+      {
+        canvasWidth: {
+          value: 260,
+          step: 1,
+          min: 10,
+          max: 400,
+          onChange: (value) => setQuery({ canvasWidth: value }),
+        },
 
-      cellSize: {
-        value: 9,
-        step: 1,
-        min: 1,
-        max: 100,
-        onChange: (value) => setQuery({ cellSize: value }),
-      },
+        cellSize: {
+          value: 9,
+          step: 1,
+          min: 1,
+          max: 100,
+          onChange: (value) => setQuery({ cellSize: value }),
+        },
 
-      lightColour: {
-        value: "red",
-        onChange: (value) => setQuery({ lightColour: value }),
+        lightColour: {
+          value: "red",
+          onChange: (value) => setQuery({ lightColour: value }),
+        },
       },
-    }),
+      {
+        collapsed: true,
+      }
+    ),
 
     Save_CANVAS: button(onSaveCanvas),
   }));

@@ -5,13 +5,18 @@ export const createBlockCanvas = (inputCanvas, params, words) => {
 
   const outCanvas1 = document.createElement("canvas");
   const outCanvas2 = document.createElement("canvas");
+  const outCanvas3 = document.createElement("canvas");
+
   outCanvas1.width = inputW * cellSize;
   outCanvas1.height = inputH * cellSize;
   outCanvas2.width = outCanvas1.width;
   outCanvas2.height = outCanvas1.height;
+  outCanvas3.width = outCanvas1.width;
+  outCanvas3.height = outCanvas1.height;
 
   const outputCtx1 = outCanvas1.getContext("2d");
   const outputCtx2 = outCanvas2.getContext("2d");
+  const outputCtx3 = outCanvas3.getContext("2d");
 
   const inputCtx = inputCanvas.getContext("2d");
   let imgData = inputCtx.getImageData(0, 0, inputW, inputH);
@@ -41,33 +46,40 @@ export const createBlockCanvas = (inputCanvas, params, words) => {
       let fontColour;
       let targCtx;
 
-      if (a > 200 && decimalPercentage > 0.01) {
+      if (a <= 200 && decimalPercentage <= 0.01) {
         targCtx = outputCtx1;
+        fontSize = maxFontSize;
+        fontColour = "green";
+      } else if (decimalPercentage < 0.5) {
+        targCtx = outputCtx2;
         fontSize = maxFontSize * decimalPercentage;
         fontColour = lightColour;
       } else {
-        targCtx = outputCtx2;
-        fontSize = maxFontSize;
-        fontColour = "green";
+        targCtx = outputCtx3;
+        fontSize = maxFontSize * decimalPercentage;
+        fontColour = lightColour;
       }
-      const character = letters[currLetterIndex];
-      currLetterIndex++;
-      if (currLetterIndex >= letters.length) currLetterIndex = 0;
 
-      targCtx.fillStyle = fontColour;
-      targCtx.save();
-      targCtx.beginPath();
-      targCtx.translate(x * cellSize, y * cellSize);
+      if (targCtx) {
+        const character = letters[currLetterIndex];
+        currLetterIndex++;
+        if (currLetterIndex >= letters.length) currLetterIndex = 0;
 
-      targCtx.font = `${fontSize}px 'Dancing Script'`;
-      targCtx.fillText(character, 0, 0);
-      // outputCtx1.arc(0, 0, diam / 2, 0, 2 * Math.PI);
-      targCtx.fill();
-      targCtx.restore();
+        targCtx.fillStyle = fontColour;
+        targCtx.save();
+        targCtx.beginPath();
+        targCtx.translate(x * cellSize, y * cellSize);
+
+        targCtx.font = `${fontSize}px 'Dancing Script'`;
+        targCtx.fillText(character, 0, 0);
+        // outputCtx1.arc(0, 0, diam / 2, 0, 2 * Math.PI);
+        targCtx.fill();
+        targCtx.restore();
+      }
     }
   }
 
-  return [outCanvas1, outCanvas2];
+  return [outCanvas1, outCanvas2, outCanvas3];
 };
 
 // SMALL CANVAS

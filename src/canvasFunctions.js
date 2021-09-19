@@ -6,6 +6,7 @@ export const createBlockCanvas = (inputCanvas, params, words) => {
   const outCanvas1 = document.createElement("canvas");
   const outCanvas2 = document.createElement("canvas");
   const outCanvas3 = document.createElement("canvas");
+  const outCanvas4 = document.createElement("canvas");
 
   outCanvas1.width = inputW * cellSize;
   outCanvas1.height = inputH * cellSize;
@@ -13,10 +14,13 @@ export const createBlockCanvas = (inputCanvas, params, words) => {
   outCanvas2.height = outCanvas1.height;
   outCanvas3.width = outCanvas1.width;
   outCanvas3.height = outCanvas1.height;
+  outCanvas4.width = outCanvas1.width;
+  outCanvas4.height = outCanvas1.height;
 
   const outputCtx1 = outCanvas1.getContext("2d");
   const outputCtx2 = outCanvas2.getContext("2d");
   const outputCtx3 = outCanvas3.getContext("2d");
+  const outputCtx4 = outCanvas4.getContext("2d");
 
   const inputCtx = inputCanvas.getContext("2d");
   let imgData = inputCtx.getImageData(0, 0, inputW, inputH);
@@ -50,12 +54,16 @@ export const createBlockCanvas = (inputCanvas, params, words) => {
         targCtx = outputCtx1;
         fontSize = maxFontSize;
         fontColour = "green";
-      } else if (decimalPercentage < 0.5) {
+      } else if (decimalPercentage < 0.6) {
         targCtx = outputCtx2;
         fontSize = maxFontSize * decimalPercentage;
         fontColour = lightColour;
-      } else {
+      } else if (decimalPercentage < 0.8) {
         targCtx = outputCtx3;
+        fontSize = maxFontSize * decimalPercentage;
+        fontColour = lightColour;
+      } else {
+        targCtx = outputCtx4;
         fontSize = maxFontSize * decimalPercentage;
         fontColour = lightColour;
       }
@@ -79,7 +87,7 @@ export const createBlockCanvas = (inputCanvas, params, words) => {
     }
   }
 
-  return [outCanvas1, outCanvas2, outCanvas3];
+  return [outCanvas1, outCanvas2, outCanvas3, outCanvas4];
 };
 
 // SMALL CANVAS

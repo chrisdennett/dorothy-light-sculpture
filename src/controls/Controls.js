@@ -5,6 +5,7 @@ import {
   BooleanParam,
   StringParam,
   NumberParam,
+  ArrayParam,
 } from "use-query-params";
 
 export default function Controls({
@@ -19,6 +20,7 @@ export default function Controls({
     fitToHeight: BooleanParam,
     lightColour: StringParam,
     canvas1X: NumberParam,
+    brightnessSplit: ArrayParam,
   });
 
   const [values, set] = useControls(() => ({
@@ -41,6 +43,13 @@ export default function Controls({
 
     redrawOptions: folder(
       {
+        brightnessSplit: {
+          value: [0.55, 0.72, 0.82],
+          min: 0,
+          max: 1,
+          onChange: (value) => setQuery({ brightnessSplit: value }),
+        },
+
         canvasWidth: {
           value: 260,
           step: 1,
@@ -63,7 +72,7 @@ export default function Controls({
         },
       },
       {
-        collapsed: true,
+        collapsed: false,
       }
     ),
 

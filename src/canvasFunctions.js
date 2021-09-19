@@ -1,5 +1,5 @@
 export const createBlockCanvas = (inputCanvas, params, words) => {
-  const { cellSize, lightColour } = params;
+  const { cellSize, lightColour, brightnessSplit } = params;
 
   const { width: inputW, height: inputH } = inputCanvas;
 
@@ -7,6 +7,7 @@ export const createBlockCanvas = (inputCanvas, params, words) => {
   const outCanvas2 = document.createElement("canvas");
   const outCanvas3 = document.createElement("canvas");
   const outCanvas4 = document.createElement("canvas");
+  const outCanvas5 = document.createElement("canvas");
 
   outCanvas1.width = inputW * cellSize;
   outCanvas1.height = inputH * cellSize;
@@ -16,11 +17,14 @@ export const createBlockCanvas = (inputCanvas, params, words) => {
   outCanvas3.height = outCanvas1.height;
   outCanvas4.width = outCanvas1.width;
   outCanvas4.height = outCanvas1.height;
+  outCanvas5.width = outCanvas1.width;
+  outCanvas5.height = outCanvas1.height;
 
   const outputCtx1 = outCanvas1.getContext("2d");
   const outputCtx2 = outCanvas2.getContext("2d");
   const outputCtx3 = outCanvas3.getContext("2d");
   const outputCtx4 = outCanvas4.getContext("2d");
+  const outputCtx5 = outCanvas5.getContext("2d");
 
   const inputCtx = inputCanvas.getContext("2d");
   let imgData = inputCtx.getImageData(0, 0, inputW, inputH);
@@ -33,6 +37,8 @@ export const createBlockCanvas = (inputCanvas, params, words) => {
   const letters = words.split("");
   let currLetterIndex = 0;
   const maxFontSize = cellSize * 1.8;
+
+  const layerLetterCounts = [0, 0, 0, 0];
 
   for (let y = 0; y < inputH; y++) {
     for (let x = 0; x < inputW; x++) {
@@ -53,17 +59,25 @@ export const createBlockCanvas = (inputCanvas, params, words) => {
       if (a <= 200 && decimalPercentage <= 0.01) {
         targCtx = outputCtx1;
         fontSize = maxFontSize;
-        fontColour = "green";
-      } else if (decimalPercentage < 0.6) {
+        fontColour = "green"; //"rgb(32, 32, 32)";
+      } else if (decimalPercentage < brightnessSplit[0]) {
+        layerLetterCounts[0]++;
         targCtx = outputCtx2;
         fontSize = maxFontSize * decimalPercentage;
         fontColour = lightColour;
-      } else if (decimalPercentage < 0.8) {
+      } else if (decimalPercentage < brightnessSplit[1]) {
+        layerLetterCounts[1]++;
         targCtx = outputCtx3;
         fontSize = maxFontSize * decimalPercentage;
         fontColour = lightColour;
-      } else {
+      } else if (decimalPercentage < brightnessSplit[2]) {
+        layerLetterCounts[2]++;
         targCtx = outputCtx4;
+        fontSize = maxFontSize * decimalPercentage;
+        fontColour = lightColour;
+      } else {
+        layerLetterCounts[3]++;
+        targCtx = outputCtx5;
         fontSize = maxFontSize * decimalPercentage;
         fontColour = lightColour;
       }
@@ -87,7 +101,17 @@ export const createBlockCanvas = (inputCanvas, params, words) => {
     }
   }
 
-  return [outCanvas1, outCanvas2, outCanvas3, outCanvas4];
+  console.log("layerLetterCounts: ", layerLetterCounts);
+  const total =
+    layerLetterCounts[0] +
+    layerLetterCounts[1] +
+    layerLetterCounts[2] +
+    layerLetterCounts[3];
+  console.log("total: ", total);
+  const idealLayerTally = Math.round(total / 4);
+  console.log("idealLayerTally: ", idealLayerTally);
+
+  return [outCanvas1, outCanvas2, outCanvas3, outCanvas4, outCanvas5];
 };
 
 // SMALL CANVAS

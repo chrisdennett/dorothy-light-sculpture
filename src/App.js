@@ -1,10 +1,15 @@
 import React, { useState, useEffect } from "react";
 // import { getRandomInt } from "./helpers";
 import "./styles.css";
+import { saveAs } from "file-saver";
+import Controls from "./controls/Controls";
 
 const App = () => {
   const [sourceImg, setSourceImg] = useState(null);
+  const [params, setParams] = useState({});
+
   const canvasRef = React.useRef(null);
+
   const maxWidth = 260;
   const blockSize = 9;
   const maxHeight = null;
@@ -27,12 +32,33 @@ const App = () => {
     }
   }, [sourceImg]);
 
-  return <canvas ref={canvasRef} />;
+  const onParamsChange = (newParams) => setParams(newParams);
+  const onSaveCanvas = () => onSave();
+
+  return (
+    <div>
+      <Controls onChange={onParamsChange} onSaveCanvas={onSaveCanvas} />
+      <canvas ref={canvasRef} />
+    </div>
+  );
 };
 
 export default App;
 
 const words = "The quick brown fox jumps over the lazy dog.";
+
+const onSave = () => {
+  var canvas = document.getElementById("dorothycanvas");
+
+  if (!canvas) return;
+  canvas.toBlob(
+    (blob) => {
+      saveAs(blob, `borg-flake.jpg`);
+    },
+    "image/jpeg",
+    0.95
+  );
+};
 
 const drawCanvas = (ctx, source) => {
   ctx.drawImage(source, 0, 0);

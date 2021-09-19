@@ -4,15 +4,15 @@ import "./styles.css";
 import { saveAs } from "file-saver";
 import Controls from "./controls/Controls";
 
+// width = 260
+// cellSize = 9
+// warm white = #fdf4dc
+
 const App = () => {
   const [sourceImg, setSourceImg] = useState(null);
   const [params, setParams] = useState({});
 
   const canvasRef = React.useRef(null);
-
-  const maxWidth = 260;
-  const blockSize = 9;
-  const maxHeight = null;
 
   useEffect(() => {
     if (!sourceImg) {
@@ -20,25 +20,38 @@ const App = () => {
       image.crossOrigin = "Anonymous";
       image.onload = () => {
         setSourceImg(image);
-
-        const smallCanvas = createSmallCanvas(image, maxWidth, maxHeight);
-        const blockCanvas = createBlockCanvas(smallCanvas, blockSize);
-        const ctx = canvasRef.current.getContext("2d");
-        canvasRef.current.width = blockCanvas.width;
-        canvasRef.current.height = blockCanvas.height;
-        drawCanvas(ctx, blockCanvas);
       };
       image.src = "dorothy-wordsworth-light-sculpture-no-bg.png";
     }
   }, [sourceImg]);
 
+  useEffect(() => {
+    if (sourceImg && params.cellSize > 0) {
+      const smallCanvas = createSmallCanvas(sourceImg, params.canvasWidth);
+      const blockCanvas = createBlockCanvas(smallCanvas, params);
+      const ctx = canvasRef.current.getContext("2d");
+      canvasRef.current.width = blockCanvas.width;
+      canvasRef.current.height = blockCanvas.height;
+      drawCanvas(ctx, blockCanvas);
+    }
+  }, [sourceImg, params.canvasWidth, params.lightColour, params.cellSize]);
+
   const onParamsChange = (newParams) => setParams(newParams);
   const onSaveCanvas = () => onSave();
+
+  let styles = {};
+  styles.width = params.fitToWidth ? "100%" : null;
+
+  if (params.fitToHeight) {
+    styles.height = "100vh";
+  }
+
+  styles.transform = `translate(${params.canvas1X}px)`;
 
   return (
     <div>
       <Controls onChange={onParamsChange} onSaveCanvas={onSaveCanvas} />
-      <canvas ref={canvasRef} />
+      <canvas ref={canvasRef} style={styles} />
     </div>
   );
 };
@@ -93,12 +106,14 @@ const createSmallCanvas = (source, maxWidth, maxHeight) => {
   return smallCanvas;
 };
 
-const createBlockCanvas = (inputCanvas, blockSize) => {
+const createBlockCanvas = (inputCanvas, params) => {
+  const { cellSize, lightColour } = params;
+
   const { width: inputW, height: inputH } = inputCanvas;
 
   const outputCanvas = document.createElement("canvas");
-  outputCanvas.width = inputW * blockSize;
-  outputCanvas.height = inputH * blockSize;
+  outputCanvas.width = inputW * cellSize;
+  outputCanvas.height = inputH * cellSize;
   const outputCtx = outputCanvas.getContext("2d");
 
   const inputCtx = inputCanvas.getContext("2d");
@@ -108,7 +123,7 @@ const createBlockCanvas = (inputCanvas, blockSize) => {
   let r, g, b, a, grey;
   // const colourOptions = ["red", "green", "blue", "white"];
   // const randIndex = getRandomInt(0, 3);
-  const colour = "white";
+  const colour = lightColour;
 
   const letters = words.split("");
   let currLetterIndex = 0;
@@ -133,9 +148,9 @@ const createBlockCanvas = (inputCanvas, blockSize) => {
         outputCtx.fillStyle = colour;
         outputCtx.save();
         outputCtx.beginPath();
-        outputCtx.translate(x * blockSize, y * blockSize);
+        outputCtx.translate(x * cellSize, y * cellSize);
 
-        const fontSize = blockSize * decimalPercentage * 1.8;
+        const fontSize = cellSize * decimalPercentage * 1.8;
         outputCtx.font = `${fontSize}px 'Dancing Script'`;
         outputCtx.fillText(character, 0, 0);
         // outputCtx.arc(0, 0, diam / 2, 0, 2 * Math.PI);

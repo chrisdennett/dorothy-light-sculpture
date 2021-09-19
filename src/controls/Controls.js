@@ -1,5 +1,4 @@
 import React, { useEffect } from "react";
-import { useHistory } from "react-router-dom";
 import { button, folder, Leva, useControls } from "leva";
 import {
   useQueryParams,
@@ -7,9 +6,6 @@ import {
   StringParam,
   NumberParam,
 } from "use-query-params";
-
-// const defaultValsPath =
-//   "?addMultipleLinesFromStart=1&allowDiagonals=0&bgColour=%23333333&canvasHeight=800&canvasWidth=800&cellSize=10&drawGrid=0&drawStartPt=0&generate=1625156099424&line2Colour=%23dedede&line3Colour=%23dedede&line4Colour=%23dedede&lineColour=%23ff0000&lineThickness=3&maxRandomOffsetSize=0.1&mirrorLeftRight=1&mirrorTopBottom=1&outerPadding=88&outline1=0&outline1Colour=%23ff0000&outline2=0&outline2Colour=%23ff0000&outline3=0&outline3Colour=%23ff0000&outline4=0&outline4Colour=%23ff0000&outputType=svg";
 
 export default function Controls({
   showControls = true,
@@ -19,28 +15,31 @@ export default function Controls({
   const [query, setQuery] = useQueryParams({
     canvasWidth: NumberParam,
     cellSize: NumberParam,
-    zoomToWidth: BooleanParam,
-    textColour: StringParam,
+    fitToWidth: BooleanParam,
+    fitToHeight: BooleanParam,
+    lightColour: StringParam,
     canvas1X: NumberParam,
   });
-  let history = useHistory();
 
   const [values, set] = useControls(() => ({
-    zoomToWidth: {
+    fitToWidth: {
       value: false,
-      onChange: (value) => setQuery({ zoomToWidth: value }),
+      onChange: (value) => setQuery({ fitToWidth: value }),
     },
-    saveCANVAS: folder({
-      Save_CANVAS: button(onSaveCanvas),
-    }),
-    Oh_youknow_stuff: folder({
-      canvas1X: {
-        value: 0,
-        step: 0.01,
-        min: 0,
-        max: 1,
-        onChange: (value) => setQuery({ canvas1X: value }),
-      },
+    fitToHeight: {
+      value: false,
+      onChange: (value) => setQuery({ fitToHeight: value }),
+    },
+
+    canvas1X: {
+      value: 0,
+      step: 1,
+      min: 0,
+      max: 100,
+      onChange: (value) => setQuery({ canvas1X: value }),
+    },
+
+    redrawOptions: folder({
       canvasWidth: {
         value: 260,
         step: 1,
@@ -57,16 +56,13 @@ export default function Controls({
         onChange: (value) => setQuery({ cellSize: value }),
       },
 
-      textColour: {
+      lightColour: {
         value: "red",
-        onChange: (value) => setQuery({ textColour: value }),
-      },
-
-      zoomToWidth: {
-        value: false,
-        onChange: (value) => setQuery({ zoomToWidth: value }),
+        onChange: (value) => setQuery({ lightColour: value }),
       },
     }),
+
+    Save_CANVAS: button(onSaveCanvas),
   }));
 
   // reset: button(() => history.push(`/${defaultValsPath}`)),

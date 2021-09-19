@@ -14,8 +14,10 @@ const App = () => {
   const [sourceImg, setSourceImg] = useState(null);
   const [params, setParams] = useState({});
 
-  const canvasRef = React.useRef(null);
+  const canvas1Ref = React.useRef(null);
+  const canvas2Ref = React.useRef(null);
 
+  // LOAD IMAGE
   useEffect(() => {
     if (!sourceImg) {
       const image = new Image();
@@ -27,48 +29,55 @@ const App = () => {
     }
   }, [sourceImg]);
 
+  // CREATE CANVAS
   useEffect(() => {
     if (sourceImg && params.cellSize > 0) {
       const smallCanvas = createSmallCanvas(sourceImg, params.canvasWidth);
-      const blockCanvas = createBlockCanvas(smallCanvas, params, words);
-      const ctx = canvasRef.current.getContext("2d");
-      canvasRef.current.width = blockCanvas.width;
-      canvasRef.current.height = blockCanvas.height;
-      ctx.drawImage(blockCanvas, 0, 0);
+      const [outCanvas1, outCanvas2] = createBlockCanvas(
+        smallCanvas,
+        params,
+        words
+      );
+
+      const canvas1 = canvas1Ref.current;
+      const canvas2 = canvas2Ref.current;
+      canvas1.width = outCanvas1.width;
+      canvas1.height = outCanvas1.height;
+      canvas2.width = outCanvas1.width;
+      canvas2.height = outCanvas1.height;
+
+      const ctx1 = canvas1.getContext("2d");
+      const ctx2 = canvas2.getContext("2d");
+
+      ctx1.drawImage(outCanvas2, 0, 0);
+      ctx2.drawImage(outCanvas1, 0, 0);
     }
   }, [sourceImg, params.canvasWidth, params.lightColour, params.cellSize]);
 
   const onParamsChange = (newParams) => setParams(newParams);
-  const onSaveCanvas = () => onSave();
+  const onSaveCanvas = () => {
+    console.log("save canvas here");
+  };
 
-  let styles = {};
-  styles.width = params.fitToWidth ? "100%" : null;
+  let styles1 = { position: "absolute" };
+  styles1.width = params.fitToWidth ? "100%" : null;
 
   if (params.fitToHeight) {
-    styles.height = "100vh";
+    styles1.height = "100vh";
   }
 
-  styles.transform = `translate(${params.canvas1X}px)`;
+  let styles2 = { ...styles1 };
+
+  styles1.transform = `translate(${params.canvas1X}px)`;
+  styles2.transform = `translate(${params.canvas1X * 1.8}px)`;
 
   return (
     <div>
       <Controls onChange={onParamsChange} onSaveCanvas={onSaveCanvas} />
-      <canvas ref={canvasRef} style={styles} />
+      <canvas ref={canvas1Ref} style={styles1} />
+      <canvas ref={canvas2Ref} style={styles2} />
     </div>
   );
 };
 
 export default App;
-
-const onSave = () => {
-  var canvas = document.getElementById("dorothycanvas");
-
-  if (!canvas) return;
-  canvas.toBlob(
-    (blob) => {
-      saveAs(blob, `borg-flake.jpg`);
-    },
-    "image/jpeg",
-    0.95
-  );
-};

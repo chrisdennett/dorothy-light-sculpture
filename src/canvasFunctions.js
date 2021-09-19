@@ -3,10 +3,15 @@ export const createBlockCanvas = (inputCanvas, params, words) => {
 
   const { width: inputW, height: inputH } = inputCanvas;
 
-  const outputCanvas = document.createElement("canvas");
-  outputCanvas.width = inputW * cellSize;
-  outputCanvas.height = inputH * cellSize;
-  const outputCtx = outputCanvas.getContext("2d");
+  const outCanvas1 = document.createElement("canvas");
+  const outCanvas2 = document.createElement("canvas");
+  outCanvas1.width = inputW * cellSize;
+  outCanvas1.height = inputH * cellSize;
+  outCanvas2.width = outCanvas1.width;
+  outCanvas2.height = outCanvas1.height;
+
+  const outputCtx1 = outCanvas1.getContext("2d");
+  const outputCtx2 = outCanvas2.getContext("2d");
 
   const inputCtx = inputCanvas.getContext("2d");
   let imgData = inputCtx.getImageData(0, 0, inputW, inputH);
@@ -34,11 +39,14 @@ export const createBlockCanvas = (inputCanvas, params, words) => {
       const decimalPercentage = grey / 255;
       let fontSize;
       let fontColour;
+      let targCtx;
 
       if (a > 200 && decimalPercentage > 0.01) {
+        targCtx = outputCtx1;
         fontSize = maxFontSize * decimalPercentage;
         fontColour = lightColour;
       } else {
+        targCtx = outputCtx2;
         fontSize = maxFontSize;
         fontColour = "green";
       }
@@ -46,22 +54,23 @@ export const createBlockCanvas = (inputCanvas, params, words) => {
       currLetterIndex++;
       if (currLetterIndex >= letters.length) currLetterIndex = 0;
 
-      outputCtx.fillStyle = fontColour;
-      outputCtx.save();
-      outputCtx.beginPath();
-      outputCtx.translate(x * cellSize, y * cellSize);
+      targCtx.fillStyle = fontColour;
+      targCtx.save();
+      targCtx.beginPath();
+      targCtx.translate(x * cellSize, y * cellSize);
 
-      outputCtx.font = `${fontSize}px 'Dancing Script'`;
-      outputCtx.fillText(character, 0, 0);
-      // outputCtx.arc(0, 0, diam / 2, 0, 2 * Math.PI);
-      outputCtx.fill();
-      outputCtx.restore();
+      targCtx.font = `${fontSize}px 'Dancing Script'`;
+      targCtx.fillText(character, 0, 0);
+      // outputCtx1.arc(0, 0, diam / 2, 0, 2 * Math.PI);
+      targCtx.fill();
+      targCtx.restore();
     }
   }
 
-  return outputCanvas;
+  return [outCanvas1, outCanvas2];
 };
 
+// SMALL CANVAS
 export const createSmallCanvas = (source, maxWidth, maxHeight) => {
   const sourceW = source.width;
   const sourceH = source.height;
@@ -89,4 +98,18 @@ export const createSmallCanvas = (source, maxWidth, maxHeight) => {
   ctx.drawImage(source, 0, 0, sourceW, sourceH, 0, 0, targetW, targetH);
 
   return smallCanvas;
+};
+
+// SAVE AS PNG
+const saveCanvas = (name = "dorothycanvas1", canvasId = "canvas1") => {
+  var canvas = document.getElementById(canvasId);
+
+  if (!canvas) return;
+  canvas.toBlob(
+    (blob) => {
+      saveAs(blob, `${name}.png`);
+    },
+    "image/png",
+    0.95
+  );
 };

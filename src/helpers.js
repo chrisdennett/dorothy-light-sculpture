@@ -3,6 +3,9 @@
  *  http://www.webtoolkit.info/javascript-color-conversion.html
  **/
 
+export const getRandomInt = (min, max) =>
+  Math.floor(Math.random() * (max - min)) + min;
+
 export const RGBtoCMYK = (R, G, B) => {
   const r = R / 255;
   const g = G / 255;

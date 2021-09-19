@@ -1,9 +1,12 @@
 import React, { useState, useEffect } from "react";
+// import { getRandomInt } from "./helpers";
+import "./styles.css";
 
 const App = () => {
   const [sourceImg, setSourceImg] = useState(null);
   const canvasRef = React.useRef(null);
-  const maxWidth = 80;
+  const maxWidth = 260;
+  const blockSize = 9;
   const maxHeight = null;
 
   useEffect(() => {
@@ -14,26 +17,22 @@ const App = () => {
         setSourceImg(image);
 
         const smallCanvas = createSmallCanvas(image, maxWidth, maxHeight);
-        const blockCanvas = createBlockCanvas(smallCanvas, 5);
+        const blockCanvas = createBlockCanvas(smallCanvas, blockSize);
         const ctx = canvasRef.current.getContext("2d");
         canvasRef.current.width = blockCanvas.width;
         canvasRef.current.height = blockCanvas.height;
         drawCanvas(ctx, blockCanvas);
       };
-      image.src = "dorothy-wordsworth-light-sculpture.png";
+      image.src = "dorothy-wordsworth-light-sculpture-no-bg.png";
     }
   }, [sourceImg]);
 
-  return (
-    <canvas
-      ref={canvasRef}
-      width={window.innerWidth}
-      height={window.innerHeight}
-    />
-  );
+  return <canvas ref={canvasRef} />;
 };
 
 export default App;
+
+const words = "The quick brown fox jumps over the lazy dog.";
 
 const drawCanvas = (ctx, source) => {
   ctx.drawImage(source, 0, 0);
@@ -80,8 +79,13 @@ const createBlockCanvas = (inputCanvas, blockSize) => {
   let imgData = inputCtx.getImageData(0, 0, inputW, inputH);
   let pixels = imgData.data;
 
-  let r, g, b, grey;
-  const colour = "purple";
+  let r, g, b, a, grey;
+  // const colourOptions = ["red", "green", "blue", "white"];
+  // const randIndex = getRandomInt(0, 3);
+  const colour = "white";
+
+  const letters = words.split("");
+  let currLetterIndex = 0;
 
   for (let y = 0; y < inputH; y++) {
     for (let x = 0; x < inputW; x++) {
@@ -90,17 +94,28 @@ const createBlockCanvas = (inputCanvas, blockSize) => {
       r = pixels[i];
       g = pixels[i + 1];
       b = pixels[i + 2];
-      // a = pixels[i + 3];
+      a = pixels[i + 3];
 
       grey = r * 0.2126 + g * 0.7152 + b * 0.0722;
 
-      const decimalPercentage = 1 - grey / 255;
-      const diam = blockSize * decimalPercentage * 1.3;
+      const decimalPercentage = grey / 255;
+      if (a > 200 && decimalPercentage > 0.01) {
+        const character = letters[currLetterIndex];
+        currLetterIndex++;
+        if (currLetterIndex >= letters.length) currLetterIndex = 0;
 
-      outputCtx.fillStyle = colour;
-      outputCtx.beginPath();
-      outputCtx.arc(x * blockSize, y * blockSize, diam / 2, 0, 2 * Math.PI);
-      outputCtx.fill();
+        outputCtx.fillStyle = colour;
+        outputCtx.save();
+        outputCtx.beginPath();
+        outputCtx.translate(x * blockSize, y * blockSize);
+
+        const fontSize = blockSize * decimalPercentage * 1.8;
+        outputCtx.font = `${fontSize}px 'Dancing Script'`;
+        outputCtx.fillText(character, 0, 0);
+        // outputCtx.arc(0, 0, diam / 2, 0, 2 * Math.PI);
+        outputCtx.fill();
+        outputCtx.restore();
+      }
     }
   }
 

@@ -1,3 +1,5 @@
+import { saveAs } from "file-saver";
+
 export const createBlockCanvas = (inputCanvas, params, words) => {
   const { cellSize, lightColour, brightnessSplit } = params;
 
@@ -145,10 +147,14 @@ export const createSmallCanvas = (source, maxWidth, maxHeight) => {
 };
 
 // SAVE AS PNG
-const saveCanvas = (name = "dorothycanvas1", canvasId = "canvas1") => {
+export const saveCanvas = ({
+  name = "dorothycanvas1",
+  canvasId = "canvas2",
+}) => {
   var canvas = document.getElementById(canvasId);
 
   if (!canvas) return;
+
   canvas.toBlob(
     (blob) => {
       saveAs(blob, `${name}.png`);

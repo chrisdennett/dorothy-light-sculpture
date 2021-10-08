@@ -19,11 +19,32 @@ export default function Controls({
     fitToWidth: BooleanParam,
     fitToHeight: BooleanParam,
     lightColour: StringParam,
+    image: StringParam,
     canvas1X: NumberParam,
     brightnessSplit: ArrayParam,
   });
 
   const [values, set] = useControls(() => ({
+    image: {
+      value: "pic-5.png",
+      options: [
+        "pic-0.jpeg",
+        "pic-1.jpeg",
+        "pic-2.jpeg",
+        "pic-3.jpeg",
+        "pic-4.jpeg",
+        "pic-5.png",
+        "pic-6.jpeg",
+        "pic-7.jpeg",
+        "pic-8.jpeg",
+      ],
+      onChange: (value) => setQuery({ image: value }),
+    },
+
+    // image: {
+    //   image: "./dorothy-exploded-NO-BG.png",
+    // },
+
     fitToWidth: {
       value: false,
       onChange: (value) => setQuery({ fitToWidth: value }),

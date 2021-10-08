@@ -1,8 +1,13 @@
 import React, { useState, useEffect } from "react";
+import useImageCanvas from "./hooks/useImageCanvas";
 // import { getRandomInt } from "./helpers";
 import "./styles.css";
 import Controls from "./controls/Controls";
-import { createBlockCanvas, createSmallCanvas } from "./canvasFunctions";
+import {
+  createBlockCanvas,
+  createSmallCanvas,
+  saveCanvas,
+} from "./canvasFunctions";
 import { words } from "./words";
 
 // width = 260
@@ -10,14 +15,23 @@ import { words } from "./words";
 // warm white = #fdf4dc
 
 const App = () => {
-  const [sourceImg, setSourceImg] = useState(null);
   const [params, setParams] = useState({});
+  const [sourceImg, setSourceImg] = useState();
+  // const [sourceImg, setSourceImg] = useState({ canvas: null, counter: 0 });
 
   const canvas1Ref = React.useRef(null);
   const canvas2Ref = React.useRef(null);
   const canvas3Ref = React.useRef(null);
   const canvas4Ref = React.useRef(null);
   const canvas5Ref = React.useRef(null);
+
+  const url = params && params.image ? `img/${params.image}` : null;
+
+  // useImageCanvas(url, (canvas) => {
+  //   setSourceImg((prev) => {
+  //     return { canvas, counter: prev + 1 };
+  //   });
+  // });
 
   // LOAD IMAGE
   useEffect(() => {
@@ -27,8 +41,9 @@ const App = () => {
       image.onload = () => {
         setSourceImg(image);
       };
-      image.src = "dorothy-wordsworth-light-sculpture-no-bg.png";
+      image.src = "img/pic-5.png";
     }
+    // image.src = "img/" + params.image;
   }, [sourceImg]);
 
   // CREATE CANVAS
@@ -76,7 +91,8 @@ const App = () => {
 
   const onParamsChange = (newParams) => setParams(newParams);
   const onSaveCanvas = () => {
-    console.log("save canvas here");
+    console.log("hello");
+    saveCanvas({ name: "canvas2", canvasId: "canvas2" });
   };
 
   let styles1 = { position: "absolute" };
@@ -110,19 +126,19 @@ const App = () => {
       <Controls onChange={onParamsChange} onSaveCanvas={onSaveCanvas} />
 
       {/* BACKGROUND */}
-      <canvas ref={canvas1Ref} style={styles1} />
+      <canvas ref={canvas1Ref} style={styles1} id="canvas1" />
 
       {/* Middle 1 */}
-      <canvas ref={canvas2Ref} style={styles2} />
+      <canvas ref={canvas2Ref} style={styles2} id="canvas2" />
 
       {/* Middle 2 */}
-      <canvas ref={canvas3Ref} style={styles3} />
+      <canvas ref={canvas3Ref} style={styles3} id="canvas3" />
 
       {/* Middle 2 */}
-      <canvas ref={canvas4Ref} style={styles4} />
+      <canvas ref={canvas4Ref} style={styles4} id="canvas4" />
 
       {/* FOREGROUND */}
-      <canvas ref={canvas5Ref} style={styles5} />
+      <canvas ref={canvas5Ref} style={styles5} id="canvas5" />
     </div>
   );
 };

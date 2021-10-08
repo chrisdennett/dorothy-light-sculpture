@@ -113,6 +113,16 @@ export const createBlockCanvas = (inputCanvas, params, words) => {
   const idealLayerTally = Math.round(total / 4);
   console.log("idealLayerTally: ", idealLayerTally);
 
+  const canvasWidth = outCanvas1.width;
+  const canvasHeight = outCanvas1.height;
+
+  const widthInMM = Math.round(canvasWidth * 0.2645833333);
+  const heightInMM = Math.round(canvasHeight * 0.2645833333);
+
+  console.log("widthInMM: ", widthInMM);
+  console.log("heightInMM: ", heightInMM);
+  console.log("----");
+
   return [outCanvas1, outCanvas2, outCanvas3, outCanvas4, outCanvas5];
 };
 

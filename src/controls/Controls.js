@@ -8,6 +8,8 @@ import {
   ArrayParam,
 } from "use-query-params";
 
+// http://localhost:3000/?brightnessSplit=0.45&brightnessSplit=0.66&brightnessSplit=0.77&canvas1X=0&canvasWidth=293&cellSize=9&fitToHeight=0&fitToWidth=1&image=pic-5.png&lightColour=%23f5f2f2
+
 export default function Controls({
   showControls = true,
   onChange,
@@ -65,14 +67,15 @@ export default function Controls({
     redrawOptions: folder(
       {
         brightnessSplit: {
-          value: [0.55, 0.72, 0.82],
+          value: [0.45, 0.66, 0.77],
+          step: 0.001,
           min: 0,
           max: 1,
           onChange: (value) => setQuery({ brightnessSplit: value }),
         },
 
         canvasWidth: {
-          value: 260,
+          value: 293,
           step: 1,
           min: 10,
           max: 400,

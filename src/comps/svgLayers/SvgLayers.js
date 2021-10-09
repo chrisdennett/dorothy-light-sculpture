@@ -30,8 +30,8 @@ export default function SvgLayers({ inputCanvas, params }) {
   const imgWidth = inputCanvas ? inputCanvas.width : 100;
   const imgHeight = inputCanvas ? inputCanvas.height : 200;
   const wToHRatio = imgHeight / imgWidth;
-  const svgWidth = params.canvasWidth * params.cellSize;
-  const svgHeight = svgWidth * wToHRatio;
+  const svgWidth = Math.round(params.canvasWidth * params.cellSize);
+  const svgHeight = Math.round(svgWidth * wToHRatio);
 
   let svgHolderStyle = {};
   if (fitToHeight) {

@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { button, folder, Leva, useControls } from "leva";
+import { folder, Leva, useControls } from "leva";
 import {
   useQueryParams,
   BooleanParam,
@@ -8,7 +8,7 @@ import {
   ArrayParam,
 } from "use-query-params";
 
-// http://localhost:3000/?brightnessSplit=0.45&brightnessSplit=0.66&brightnessSplit=0.77&canvas1X=0&canvasWidth=293&cellSize=9&fitToHeight=0&fitToWidth=1&image=pic-5.png&lightColour=%23f5f2f2
+// http://localhost:3000/?bgColour=%23414141&brightnessAdjust=0&brightnessSplit=0.45&brightnessSplit=0.69&brightnessSplit=0.82&canvas1X=0&canvasWidth=235&cellSize=9&contrast=10&cropBottom=1&cropLeft=0.1&cropRight=0.9&cropTop=0&image=pic-5.png&lightColour=%23f5f2f2&outputType=canvas&showLayer1=1&showLayer2=1&showLayer3=1&showLayer4=1&showLayer5=1&viewSize=fitToWidth
 
 export default function Controls({ showControls = true, onChange }) {
   const [query, setQuery] = useQueryParams({
@@ -17,7 +17,7 @@ export default function Controls({ showControls = true, onChange }) {
     viewSize: StringParam,
     lightColour: StringParam,
     bgColour: StringParam,
-    // image: StringParam,
+    outputType: StringParam,
     brightnessAdjust: NumberParam,
     contrast: NumberParam,
     showLayer1: BooleanParam,
@@ -34,26 +34,6 @@ export default function Controls({ showControls = true, onChange }) {
   });
 
   const [values, set] = useControls(() => ({
-    // image: {
-    //   value: "pic-5.png",
-    //   options: [
-    //     "pic-0.jpeg",
-    //     "pic-1.jpeg",
-    //     "pic-2.jpeg",
-    //     "pic-3.jpeg",
-    //     "pic-4.jpeg",
-    //     "pic-5.png",
-    //     "pic-6.jpeg",
-    //     "pic-7.jpeg",
-    //     "pic-8.jpeg",
-    //   ],
-    //   onChange: (value) => setQuery({ image: value }),
-    // },
-
-    // image: {
-    //   image: "./dorothy-exploded-NO-BG.png",
-    // },
-
     outputType: {
       value: "svg",
       options: ["svg", "canvas"],
@@ -98,7 +78,7 @@ export default function Controls({ showControls = true, onChange }) {
         },
       },
       {
-        collapsed: false,
+        collapsed: true,
       }
     ),
 
@@ -130,7 +110,7 @@ export default function Controls({ showControls = true, onChange }) {
         },
 
         canvasWidth: {
-          value: 293,
+          value: 235,
           step: 1,
           min: 10,
           max: 400,
@@ -176,7 +156,7 @@ export default function Controls({ showControls = true, onChange }) {
     cropping: folder(
       {
         cropLeft: {
-          value: 0,
+          value: 0.1,
           min: 0,
           max: 1,
           onChange: (value) => setQuery({ cropLeft: value }),
@@ -188,7 +168,7 @@ export default function Controls({ showControls = true, onChange }) {
           onChange: (value) => setQuery({ cropTop: value }),
         },
         cropRight: {
-          value: 1,
+          value: 0.9,
           min: 0,
           max: 1,
           onChange: (value) => setQuery({ cropRight: value }),

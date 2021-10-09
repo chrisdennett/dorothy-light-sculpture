@@ -10,18 +10,16 @@ import {
 
 // http://localhost:3000/?brightnessSplit=0.45&brightnessSplit=0.66&brightnessSplit=0.77&canvas1X=0&canvasWidth=293&cellSize=9&fitToHeight=0&fitToWidth=1&image=pic-5.png&lightColour=%23f5f2f2
 
-export default function Controls({
-  showControls = true,
-  onChange,
-  onSaveCanvas,
-}) {
+export default function Controls({ showControls = true, onChange }) {
   const [query, setQuery] = useQueryParams({
     canvasWidth: NumberParam,
     cellSize: NumberParam,
-    fitToWidth: BooleanParam,
-    fitToHeight: BooleanParam,
+    viewSize: StringParam,
     lightColour: StringParam,
+    bgColour: StringParam,
     // image: StringParam,
+    brightnessAdjust: NumberParam,
+    contrast: NumberParam,
     showLayer1: BooleanParam,
     showLayer2: BooleanParam,
     showLayer3: BooleanParam,
@@ -29,6 +27,10 @@ export default function Controls({
     showLayer5: BooleanParam,
     canvas1X: NumberParam,
     brightnessSplit: ArrayParam,
+    cropTop: NumberParam,
+    cropLeft: NumberParam,
+    cropRight: NumberParam,
+    cropBottom: NumberParam,
   });
 
   const [values, set] = useControls(() => ({
@@ -52,13 +54,16 @@ export default function Controls({
     //   image: "./dorothy-exploded-NO-BG.png",
     // },
 
-    fitToWidth: {
-      value: false,
-      onChange: (value) => setQuery({ fitToWidth: value }),
+    outputType: {
+      value: "svg",
+      options: ["svg", "canvas"],
+      onChange: (option) => setQuery({ outputType: option }),
     },
-    fitToHeight: {
-      value: false,
-      onChange: (value) => setQuery({ fitToHeight: value }),
+
+    viewSize: {
+      value: "fitToHeight",
+      options: ["fullSize", "fitToWidth", "fitToHeight"],
+      onChange: (option) => setQuery({ viewSize: option }),
     },
 
     canvas1X: {
@@ -97,6 +102,23 @@ export default function Controls({
       }
     ),
 
+    colours: folder(
+      {
+        lightColour: {
+          value: "#f5f2f2",
+          onChange: (value) => setQuery({ lightColour: value }),
+        },
+
+        bgColour: {
+          value: "#f5f2f2",
+          onChange: (value) => setQuery({ bgColour: value }),
+        },
+      },
+      {
+        collapsed: true,
+      }
+    ),
+
     redrawOptions: folder(
       {
         brightnessSplit: {
@@ -122,10 +144,60 @@ export default function Controls({
           max: 100,
           onChange: (value) => setQuery({ cellSize: value }),
         },
+      },
+      {
+        collapsed: true,
+      }
+    ),
 
-        lightColour: {
-          value: "red",
-          onChange: (value) => setQuery({ lightColour: value }),
+    imageAdjustments: folder(
+      {
+        brightnessAdjust: {
+          value: 0,
+          step: 1,
+          min: -100,
+          max: 100,
+          onChange: (value) => setQuery({ brightnessAdjust: value }),
+        },
+
+        contrast: {
+          value: 10,
+          step: 1,
+          min: -100,
+          max: 100,
+          onChange: (value) => setQuery({ contrast: value }),
+        },
+      },
+      {
+        collapsed: true,
+      }
+    ),
+
+    cropping: folder(
+      {
+        cropLeft: {
+          value: 0,
+          min: 0,
+          max: 1,
+          onChange: (value) => setQuery({ cropLeft: value }),
+        },
+        cropTop: {
+          value: 0,
+          min: 0,
+          max: 1,
+          onChange: (value) => setQuery({ cropTop: value }),
+        },
+        cropRight: {
+          value: 1,
+          min: 0,
+          max: 1,
+          onChange: (value) => setQuery({ cropRight: value }),
+        },
+        cropBottom: {
+          value: 1,
+          min: 0,
+          max: 1,
+          onChange: (value) => setQuery({ cropBottom: value }),
         },
       },
       {

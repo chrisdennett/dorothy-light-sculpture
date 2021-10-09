@@ -3,14 +3,15 @@ import useImageCanvas from "./hooks/useImageCanvas";
 // import { getRandomInt } from "./helpers";
 import "./styles.css";
 import Controls from "./controls/Controls";
-import {
-  createBlockCanvas,
-  createSmallCanvas,
-  saveCanvas,
-} from "./canvasFunctions";
+import { createBlockCanvas, createSmallCanvas } from "./canvasFunctions";
 import { words } from "./words";
+import {
+  createBrightnessCanvas,
+  createCroppedCanvas,
+  createThresholdCanvas,
+} from "./utils/UTILS";
 
-// width = 260
+// width = 293
 // cellSize = 9
 // warm white = #fdf4dc
 
@@ -49,9 +50,28 @@ const App = () => {
   // CREATE CANVAS
   useEffect(() => {
     if (sourceImg && params.cellSize > 0) {
-      const smallCanvas = createSmallCanvas(sourceImg, params.canvasWidth);
+      const crop = {
+        left: params.cropLeft,
+        right: params.cropRight,
+        top: params.cropTop,
+        bottom: params.cropBottom,
+      };
+
+      const croppedCanvas = createCroppedCanvas(sourceImg, crop);
+
+      const smallCanvas = createSmallCanvas(croppedCanvas, params.canvasWidth);
+
+      const brightnessCanvas = createBrightnessCanvas(smallCanvas, {
+        brightnessAdjust: params.brightnessAdjust,
+      });
+
+      const contrastCanvas = createThresholdCanvas(
+        brightnessCanvas,
+        params.contrast
+      );
+
       const [outCanvas1, outCanvas2, outCanvas3, outCanvas4, outCanvas5] =
-        createBlockCanvas(smallCanvas, params, words);
+        createBlockCanvas(contrastCanvas, params, words);
 
       const canvas1 = canvas1Ref.current;
       const canvas2 = canvas2Ref.current;
@@ -87,18 +107,27 @@ const App = () => {
     params.lightColour,
     params.cellSize,
     params.brightnessSplit,
+    params.brightnessAdjust,
+    params.contrast,
+    params.bgColour,
+    params.cropLeft,
+    params.cropTop,
+    params.cropRight,
+    params.cropBottom,
   ]);
 
   const onParamsChange = (newParams) => setParams(newParams);
-  const onSaveCanvas = () => {
-    console.log("hello");
-    saveCanvas({ name: "canvas2", canvasId: "canvas2" });
-  };
+  // const onSaveCanvas = () => {
+  //   saveCanvas({ name: "canvas2", canvasId: "canvas2" });
+  // };
+
+  const fitToWidth = params.viewSize === "fitToWidth";
+  const fitToHeight = params.viewSize === "fitToHeight";
 
   let styles1 = { position: "absolute" };
-  styles1.width = params.fitToWidth ? "100%" : null;
+  styles1.width = fitToWidth ? "100%" : null;
 
-  if (params.fitToHeight) {
+  if (fitToHeight) {
     styles1.height = "100vh";
   }
 
@@ -123,7 +152,7 @@ const App = () => {
 
   return (
     <div>
-      <Controls onChange={onParamsChange} onSaveCanvas={onSaveCanvas} />
+      <Controls onChange={onParamsChange} />
 
       {/* BACKGROUND */}
       <canvas

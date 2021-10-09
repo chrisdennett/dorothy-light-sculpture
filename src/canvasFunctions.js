@@ -1,7 +1,7 @@
 import { saveAs } from "file-saver";
 
 export const createBlockCanvas = (inputCanvas, params, words) => {
-  const { cellSize, lightColour, brightnessSplit } = params;
+  const { cellSize, lightColour, bgColour, brightnessSplit } = params;
 
   const { width: inputW, height: inputH } = inputCanvas;
 
@@ -61,7 +61,7 @@ export const createBlockCanvas = (inputCanvas, params, words) => {
       if (a <= 200 && decimalPercentage <= 0.01) {
         targCtx = outputCtx1;
         fontSize = maxFontSize;
-        fontColour = "green"; //"rgb(32, 32, 32)";
+        fontColour = bgColour; //"rgb(32, 32, 32)";
       } else if (decimalPercentage < brightnessSplit[0]) {
         layerLetterCounts[0]++;
         targCtx = outputCtx2;
@@ -96,7 +96,6 @@ export const createBlockCanvas = (inputCanvas, params, words) => {
 
         targCtx.font = `${fontSize}px 'Dancing Script'`;
         targCtx.fillText(character, 0, 0);
-        // outputCtx1.arc(0, 0, diam / 2, 0, 2 * Math.PI);
         targCtx.fill();
         targCtx.restore();
       }

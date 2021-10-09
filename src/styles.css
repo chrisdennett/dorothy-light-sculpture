@@ -5,9 +5,9 @@ body {
   background-color: rgb(32, 32, 32);
 }
 
-canvas {
-  margin-left: 200px;
-}
+/* canvas { */
+/* margin-left: 200px; */
+/* } */
 
 /* canvas {
   max-width: 100vw; 

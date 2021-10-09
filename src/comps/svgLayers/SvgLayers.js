@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import { words } from "../../words";
-import styles from "./svgLayers.module.css";
 
 export default function SvgLayers({ inputCanvas, params }) {
   const [layers, setLayers] = useState(null);
@@ -46,10 +45,26 @@ export default function SvgLayers({ inputCanvas, params }) {
 
   const offsetIncrease = 2.8;
 
-  const styles4 = `translate(${params.canvas1X * (offsetIncrease * 0.2)}, 0)`;
-  const styles3 = `translate(${params.canvas1X * (offsetIncrease * 0.4)}, 0)`;
-  const styles2 = `translate(${params.canvas1X * (offsetIncrease * 0.6)}, 0)`;
-  const styles1 = `translate(${params.canvas1X * offsetIncrease}, 0)`;
+  let holderWidth = svgWidth;
+  let holderHeight = svgHeight;
+  if (params.viewSize === "fitToWidth") {
+    holderWidth = "100vw";
+    holderHeight = "inherit";
+  } else if (params.viewSize === "fitToHeight") {
+    holderHeight = "100vh";
+    holderWidth = "i00%";
+  }
+
+  const styles = {
+    position: "absolute",
+    width: holderWidth,
+    height: holderHeight,
+  };
+
+  const styles4 = params.canvas1X * (offsetIncrease * 0.2);
+  const styles3 = params.canvas1X * (offsetIncrease * 0.4);
+  const styles2 = params.canvas1X * (offsetIncrease * 0.6);
+  const styles1 = params.canvas1X * offsetIncrease;
 
   if (!layers || layers.length < 4) return null;
 
@@ -57,153 +72,182 @@ export default function SvgLayers({ inputCanvas, params }) {
     <div className={styles.svgLayers}>
       <div
         style={{
-          display: params.outputType === "svg" ? "inherit" : "none",
           ...svgHolderStyle,
         }}
       >
-        <svg
-          id="svg"
-          viewBox={`0 0 ${svgWidth} ${svgHeight}`}
-          xmlns="http://www.w3.org/2000/svg"
-          style={{
-            maxWidth: "100%",
-            maxHeight: "100%",
-          }}
-        >
-          <g
-            fontFamily="Dancing Script"
-            textAnchor="start"
-            alignmentBaseline="hanging"
-          >
-            <g id="group-1" fill={params.bgColour}>
-              {layers[0].map((grp, i) => (
-                <text
-                  key={`g5-${i}`}
-                  x={grp.x}
-                  y={grp.y}
-                  fontSize={grp.fontSize}
-                >
-                  {grp.character}
-                </text>
-              ))}
-            </g>
+        {/* SVG 1 */}
+        {params.showLayer1 && (
+          <div style={{ ...styles, left: styles1 }}>
+            <svg
+              id="svg-1"
+              viewBox={`0 0 ${svgWidth} ${svgHeight}`}
+              xmlns="http://www.w3.org/2000/svg"
+              style={{
+                maxWidth: "100%",
+                maxHeight: "100%",
+              }}
+            >
+              <g
+                id="group-1"
+                fill={params.bgColour}
+                fontFamily="Dancing Script"
+                textAnchor="start"
+                alignmentBaseline="hanging"
+              >
+                {layers[0].map((grp, i) => (
+                  <text
+                    key={`g5-${i}`}
+                    x={grp.x}
+                    y={grp.y}
+                    fontSize={grp.fontSize}
+                  >
+                    {grp.character}
+                  </text>
+                ))}
+              </g>
+            </svg>
+          </div>
+        )}
 
-            <g id="group-2" fill={params.lightColour} transform={styles1}>
-              {layers[1].map((grp, i) => (
-                <text
-                  key={`g2-${i}`}
-                  x={grp.x}
-                  y={grp.y}
-                  fontSize={grp.fontSize}
-                >
-                  {grp.character}
-                </text>
-              ))}
-            </g>
+        {/* SVG 2 */}
+        {params.showLayer2 && (
+          <div style={{ ...styles, left: styles2 }}>
+            <svg
+              id="svg-2"
+              viewBox={`0 0 ${svgWidth} ${svgHeight}`}
+              xmlns="http://www.w3.org/2000/svg"
+              style={{
+                maxWidth: "100%",
+                maxHeight: "100%",
+              }}
+            >
+              <g
+                id="group-2"
+                fill={params.lightColour}
+                fontFamily="Dancing Script"
+                textAnchor="start"
+                alignmentBaseline="hanging"
+              >
+                {layers[1].map((grp, i) => (
+                  <text
+                    key={`g2-${i}`}
+                    x={grp.x}
+                    y={grp.y}
+                    fontSize={grp.fontSize}
+                  >
+                    {grp.character}
+                  </text>
+                ))}
+              </g>
+            </svg>
+          </div>
+        )}
 
-            <g id="group-3" fill={params.lightColour} transform={styles2}>
-              {layers[2].map((grp, i) => (
-                <text
-                  key={`g3-${i}`}
-                  x={grp.x}
-                  y={grp.y}
-                  fontSize={grp.fontSize}
-                >
-                  {grp.character}
-                </text>
-              ))}
-            </g>
+        {/* SVG 3 */}
+        {params.showLayer3 && (
+          <div style={{ ...styles, left: styles3 }}>
+            <svg
+              id="svg-3"
+              viewBox={`0 0 ${svgWidth} ${svgHeight}`}
+              xmlns="http://www.w3.org/2000/svg"
+              style={{
+                maxWidth: "100%",
+                maxHeight: "100%",
+              }}
+            >
+              <g
+                id="group-3"
+                fill={params.lightColour}
+                fontFamily="Dancing Script"
+                textAnchor="start"
+                alignmentBaseline="hanging"
+              >
+                {layers[2].map((grp, i) => (
+                  <text
+                    key={`g3-${i}`}
+                    x={grp.x}
+                    y={grp.y}
+                    fontSize={grp.fontSize}
+                  >
+                    {grp.character}
+                  </text>
+                ))}
+              </g>
+            </svg>
+          </div>
+        )}
 
-            <g id="group-4" fill={params.lightColour} transform={styles3}>
-              {layers[3].map((grp, i) => (
-                <text
-                  key={`g4-${i}`}
-                  x={grp.x}
-                  y={grp.y}
-                  fontSize={grp.fontSize}
-                >
-                  {grp.character}
-                </text>
-              ))}
-            </g>
+        {/* SVG 4 */}
+        {params.showLayer4 && (
+          <div style={{ ...styles, left: styles4 }}>
+            <svg
+              id="svg-4"
+              viewBox={`0 0 ${svgWidth} ${svgHeight}`}
+              xmlns="http://www.w3.org/2000/svg"
+              style={{
+                maxWidth: "100%",
+                maxHeight: "100%",
+              }}
+            >
+              <g
+                id="group-4"
+                fill={params.lightColour}
+                fontFamily="Dancing Script"
+                textAnchor="start"
+                alignmentBaseline="hanging"
+              >
+                {layers[3].map((grp, i) => (
+                  <text
+                    key={`g4-${i}`}
+                    x={grp.x}
+                    y={grp.y}
+                    fontSize={grp.fontSize}
+                  >
+                    {grp.character}
+                  </text>
+                ))}
+              </g>
+            </svg>
+          </div>
+        )}
 
-            <g id="group-5" fill={params.lightColour} transform={styles4}>
-              {layers[4].map((grp, i) => (
-                <text
-                  key={`g5-${i}`}
-                  x={grp.x}
-                  y={grp.y}
-                  fontSize={grp.fontSize}
-                >
-                  {grp.character}
-                </text>
-              ))}
-            </g>
-          </g>
-        </svg>
+        {/* SVG 5 */}
+        {params.showLayer5 && (
+          <div style={{ ...styles }}>
+            <svg
+              id="svg-5"
+              viewBox={`0 0 ${svgWidth} ${svgHeight}`}
+              xmlns="http://www.w3.org/2000/svg"
+              style={{
+                maxWidth: "100%",
+                maxHeight: "100%",
+              }}
+            >
+              <g
+                id="group-5"
+                fill={params.lightColour}
+                fontFamily="Dancing Script"
+                textAnchor="start"
+                alignmentBaseline="hanging"
+              >
+                {layers[4].map((grp, i) => (
+                  <text
+                    key={`g5-${i}`}
+                    x={grp.x}
+                    y={grp.y}
+                    fontSize={grp.fontSize}
+                  >
+                    {grp.character}
+                  </text>
+                ))}
+              </g>
+            </svg>
+          </div>
+        )}
       </div>
     </div>
   );
 }
-
-const createSvgLayers = (params) => {
-  const offsetIncrease = 2.8;
-
-  const styles4 = `translate(${params.canvas1X * (offsetIncrease * 0.2)}, 0)`;
-  const styles3 = `translate(${params.canvas1X * (offsetIncrease * 0.4)}, 0)`;
-  const styles2 = `translate(${params.canvas1X * (offsetIncrease * 0.6)}, 0)`;
-  const styles1 = `translate(${params.canvas1X * offsetIncrease}, 0)`;
-
-  return (
-    <>
-      <g
-        fontFamily="Dancing Script"
-        textAnchor="start"
-        alignmentBaseline="hanging"
-      >
-        <g id="group-1" fill={params.bgColour}>
-          {group1.map((grp, i) => (
-            <text key={`g5-${i}`} x={grp.x} y={grp.y} fontSize={grp.fontSize}>
-              {grp.character}
-            </text>
-          ))}
-        </g>
-
-        <g id="group-2" fill={params.lightColour} transform={styles1}>
-          {group2.map((grp, i) => (
-            <text key={`g2-${i}`} x={grp.x} y={grp.y} fontSize={grp.fontSize}>
-              {grp.character}
-            </text>
-          ))}
-        </g>
-
-        <g id="group-3" fill={params.lightColour} transform={styles2}>
-          {group3.map((grp, i) => (
-            <text key={`g3-${i}`} x={grp.x} y={grp.y} fontSize={grp.fontSize}>
-              {grp.character}
-            </text>
-          ))}
-        </g>
-
-        <g id="group-4" fill={params.lightColour} transform={styles3}>
-          {group4.map((grp, i) => (
-            <text key={`g4-${i}`} x={grp.x} y={grp.y} fontSize={grp.fontSize}>
-              {grp.character}
-            </text>
-          ))}
-        </g>
-
-        <g id="group-5" fill={params.lightColour} transform={styles4}>
-          {group5.map((grp, i) => (
-            <text key={`g5-${i}`} x={grp.x} y={grp.y} fontSize={grp.fontSize}>
-              {grp.character}
-            </text>
-          ))}
-        </g>
-      </g>
-    </>
-  );
-};
 
 const getLayerData = (inputCanvas, params, words) => {
   const { cellSize, lightColour, bgColour, brightnessSplit } = params;

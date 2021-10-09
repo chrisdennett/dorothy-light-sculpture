@@ -126,19 +126,39 @@ const App = () => {
       <Controls onChange={onParamsChange} onSaveCanvas={onSaveCanvas} />
 
       {/* BACKGROUND */}
-      <canvas ref={canvas1Ref} style={styles1} id="canvas1" />
+      <canvas
+        ref={canvas1Ref}
+        style={{ ...styles1, display: params.showLayer1 ? "inherit" : "none" }}
+        id="canvas1"
+      />
 
       {/* Middle 1 */}
-      <canvas ref={canvas2Ref} style={styles2} id="canvas2" />
+      <canvas
+        ref={canvas2Ref}
+        style={{ ...styles2, display: params.showLayer2 ? "inherit" : "none" }}
+        id="canvas2"
+      />
 
       {/* Middle 2 */}
-      <canvas ref={canvas3Ref} style={styles3} id="canvas3" />
+      <canvas
+        ref={canvas3Ref}
+        style={{ ...styles3, display: params.showLayer3 ? "inherit" : "none" }}
+        id="canvas3"
+      />
 
       {/* Middle 2 */}
-      <canvas ref={canvas4Ref} style={styles4} id="canvas4" />
+      <canvas
+        ref={canvas4Ref}
+        style={{ ...styles4, display: params.showLayer4 ? "inherit" : "none" }}
+        id="canvas4"
+      />
 
       {/* FOREGROUND */}
-      <canvas ref={canvas5Ref} style={styles5} id="canvas5" />
+      <canvas
+        ref={canvas5Ref}
+        style={{ ...styles5, display: params.showLayer5 ? "inherit" : "none" }}
+        id="canvas5"
+      />
     </div>
   );
 };

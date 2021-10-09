@@ -22,6 +22,11 @@ export default function Controls({
     fitToHeight: BooleanParam,
     lightColour: StringParam,
     // image: StringParam,
+    showLayer1: BooleanParam,
+    showLayer2: BooleanParam,
+    showLayer3: BooleanParam,
+    showLayer4: BooleanParam,
+    showLayer5: BooleanParam,
     canvas1X: NumberParam,
     brightnessSplit: ArrayParam,
   });
@@ -64,6 +69,34 @@ export default function Controls({
       onChange: (value) => setQuery({ canvas1X: value }),
     },
 
+    showHideLayers: folder(
+      {
+        showLayer1: {
+          value: true,
+          onChange: (value) => setQuery({ showLayer1: value }),
+        },
+        showLayer2: {
+          value: true,
+          onChange: (value) => setQuery({ showLayer2: value }),
+        },
+        showLayer3: {
+          value: true,
+          onChange: (value) => setQuery({ showLayer3: value }),
+        },
+        showLayer4: {
+          value: true,
+          onChange: (value) => setQuery({ showLayer4: value }),
+        },
+        showLayer5: {
+          value: true,
+          onChange: (value) => setQuery({ showLayer5: value }),
+        },
+      },
+      {
+        collapsed: false,
+      }
+    ),
+
     redrawOptions: folder(
       {
         brightnessSplit: {
@@ -96,11 +129,11 @@ export default function Controls({
         },
       },
       {
-        collapsed: false,
+        collapsed: true,
       }
     ),
 
-    Save_CANVAS: button(onSaveCanvas),
+    // Save_CANVAS: button(onSaveCanvas),
   }));
 
   // reset: button(() => history.push(`/${defaultValsPath}`)),

@@ -8,7 +8,7 @@ import {
   ArrayParam,
 } from "use-query-params";
 
-// http://localhost:3000/?bgColour=%23414141&brightnessAdjust=0&brightnessSplit=0.45&brightnessSplit=0.69&brightnessSplit=0.82&canvas1X=0&canvasWidth=235&cellSize=9&contrast=10&cropBottom=1&cropLeft=0.1&cropRight=0.9&cropTop=0&image=pic-5.png&lightColour=%23f5f2f2&outputType=canvas&showLayer1=1&showLayer2=1&showLayer3=1&showLayer4=1&showLayer5=1&viewSize=fitToWidth
+// http://localhost:3000/?bgColour=%23414141&brightnessAdjust=0&brightnessSplit=0.45&brightnessSplit=0.69&brightnessSplit=0.82&canvas1X=-1&canvasWidth=235&cellSize=9&contrast=10&cropBottom=1&cropLeft=0.1&cropRight=0.9&cropTop=0&image=pic-5.png&lightColour=%23f5f2f2&outputType=canvas&showLayer1=1&showLayer2=1&showLayer3=1&showLayer4=1&showLayer5=1&viewSize=fullSize
 
 export default function Controls({ showControls = true, onChange }) {
   const [query, setQuery] = useQueryParams({

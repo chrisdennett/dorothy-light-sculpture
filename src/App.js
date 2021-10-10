@@ -9,6 +9,7 @@ import {
 } from "./utils/UTILS";
 import SvgLayers from "./comps/svgLayers/SvgLayers";
 import CanvasLayers from "./comps/canvasLayers/CanvasLayers";
+import { saveCanvasZipFile, saveSvgZipFile } from "./utils/saveZipFile";
 
 // width = 235
 // cellSize = 9
@@ -70,24 +71,17 @@ const App = () => {
   const onParamsChange = (newParams) => setParams(newParams);
 
   const onSaveLayers = () => {
-    save_as_svg("svg-2");
-  };
-
-  const save_as_svg = (id) => {
-    var full_svg = get_svg_text(id);
-    var blob = new Blob([full_svg], { type: "image/svg+xml" });
-    saveAs(blob, `layer-${id}.svg`);
-  };
-
-  const get_svg_text = (id) => {
-    var svg_data = document.getElementById(id)
-      ? document.getElementById(id).outerHTML
-      : "waiting"; //put id of your svg element here
-
-    svg_data = svg_data.split(">").join(`>
-    `);
-
-    return svg_data;
+    if (params.outputType === "canvas") {
+      saveCanvasZipFile([
+        "canvas1",
+        "canvas2",
+        "canvas3",
+        "canvas4",
+        "canvas5",
+      ]);
+    } else {
+      saveSvgZipFile(["svg-1", "svg-2", "svg-3", "svg-4", "svg-5"]);
+    }
   };
 
   return (

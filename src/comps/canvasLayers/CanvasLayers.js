@@ -92,6 +92,7 @@ export default function CanvasLayers({ inputCanvas, params }) {
     <div className={styles.canvasLayers}>
       {/* BACKGROUND */}
       <canvas
+        id="canvas-1"
         ref={canvas1Ref}
         style={{
           ...styles1,
@@ -102,6 +103,7 @@ export default function CanvasLayers({ inputCanvas, params }) {
 
       {/* Middle 1 */}
       <canvas
+        id="canvas-2"
         ref={canvas2Ref}
         style={{
           ...styles2,
@@ -112,6 +114,7 @@ export default function CanvasLayers({ inputCanvas, params }) {
 
       {/* Middle 2 */}
       <canvas
+        id="canvas-3"
         ref={canvas3Ref}
         style={{
           ...styles3,
@@ -122,6 +125,7 @@ export default function CanvasLayers({ inputCanvas, params }) {
 
       {/* Middle 2 */}
       <canvas
+        id="canvas-4"
         ref={canvas4Ref}
         style={{
           ...styles4,
@@ -132,6 +136,7 @@ export default function CanvasLayers({ inputCanvas, params }) {
 
       {/* FOREGROUND */}
       <canvas
+        id="canvas-5"
         ref={canvas5Ref}
         style={{
           ...styles5,

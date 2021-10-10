@@ -24,7 +24,6 @@ export const saveCanvasZipFile = async (
 
   // Add an top-level, arbitrary text file with contents
   //   let informationText = `Canvas size: Width:${canvasArray[0].width}, height:(${canvasArray[0].width}\n`;
-
   //   zip.file("information.txt", informationText);
 
   const nowStr = getDateString();
@@ -44,7 +43,7 @@ export const saveSvgZipFile = async (svgIds, fileName = "dorothySvgFiles") => {
 
   let count = 0;
   for (let id of svgIds) {
-    const svgString = get_svg_text(id);
+    const svgString = getSvgText(id);
 
     // Add a file to the directory, in this case an image with data URI as contents
     layersFolder.file(`svg_${count}.svg`, svgString);
@@ -65,7 +64,7 @@ export const saveSvgZipFile = async (svgIds, fileName = "dorothySvgFiles") => {
   });
 };
 
-const get_svg_text = (id) => {
+const getSvgText = (id) => {
   var svg_data = document.getElementById(id)
     ? document.getElementById(id).outerHTML
     : "waiting"; //put id of your svg element here

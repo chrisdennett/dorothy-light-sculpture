@@ -12,6 +12,7 @@ import CanvasLayers from "./comps/canvasLayers/CanvasLayers";
 import { saveCanvasZipFile, saveSvgZipFile } from "./utils/saveZipFile";
 
 // width = 235
+//
 // cellSize = 9
 // warm white = #fdf4dc
 

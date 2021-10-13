@@ -20,6 +20,7 @@ export default function Controls({ showControls = true, onChange }) {
     outputType: StringParam,
     brightnessAdjust: NumberParam,
     contrast: NumberParam,
+    includeLayerBackgrounds: BooleanParam,
     showLayer1: BooleanParam,
     showLayer2: BooleanParam,
     showLayer3: BooleanParam,
@@ -38,6 +39,11 @@ export default function Controls({ showControls = true, onChange }) {
       value: "svg",
       options: ["svg", "canvas"],
       onChange: (option) => setQuery({ outputType: option }),
+    },
+
+    includeLayerBackgrounds: {
+      value: false,
+      onChange: (value) => setQuery({ includeLayerBackgrounds: value }),
     },
 
     viewSize: {

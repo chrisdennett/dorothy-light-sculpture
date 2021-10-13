@@ -1,3 +1,9 @@
 .svgLayers {
   padding: 0;
 }
+
+.hidden {
+  position: fixed;
+  right: 100%;
+  top: -100%;
+}

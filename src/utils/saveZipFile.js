@@ -39,16 +39,20 @@ export const saveSvgZipFile = async (svgIds, fileName = "dorothySvgFiles") => {
   const zip = new JSZip();
 
   // Generate a directory within the Zip file structure
-  const layersFolder = zip.folder("layers");
+  // const layersFolder = zip.folder("layers");
 
   let count = 0;
   for (let id of svgIds) {
     const svgString = getSvgText(id);
 
     // Add a file to the directory, in this case an image with data URI as contents
-    layersFolder.file(`svg_${count}.svg`, svgString);
+    zip.file(`svg_${count}.svg`, svgString);
     count++;
   }
+
+  // add full svg
+  const fullSvgStr = getSvgText("svg-full");
+  zip.file("svg-full.svg", fullSvgStr);
 
   // Add an top-level, arbitrary text file with contents
   //   let informationText = `SVG size: Width:${canvasArray[0].width}, height:(${canvasArray[0].width}\n`;

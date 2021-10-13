@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import styles from "./svgLayers.module.css";
 import { words } from "../../words";
 
 export default function SvgLayers({ inputCanvas, params }) {
@@ -55,7 +56,7 @@ export default function SvgLayers({ inputCanvas, params }) {
     holderWidth = "i00%";
   }
 
-  const styles = {
+  const divStyles = {
     position: "absolute",
     width: holderWidth,
     height: holderHeight,
@@ -75,179 +76,154 @@ export default function SvgLayers({ inputCanvas, params }) {
           ...svgHolderStyle,
         }}
       >
+        {/* COMBINED HIDDEN SVG */}
+        <div className={styles.hidden}>
+          <SvgOuter id="svg-full" svgWidth={svgWidth} svgHeight={svgHeight}>
+            {layers.map((layerData, i) => (
+              <LayerGroup
+                key={i}
+                includeLayerBackgrounds={params.includeLayerBackgrounds}
+                id={`full-group-${i + 1}`}
+                colour={i === 0 ? params.bgColour : params.lightColour}
+                layerData={layerData}
+                svgWidth={svgWidth}
+                svgHeight={svgHeight}
+              />
+            ))}
+          </SvgOuter>
+        </div>
+
         {/* SVG 1 */}
         {params.showLayer1 && (
-          <div style={{ ...styles, left: styles1 }}>
-            <svg
-              id="svg-1"
-              viewBox={`0 0 ${svgWidth} ${svgHeight}`}
-              xmlns="http://www.w3.org/2000/svg"
-              style={{
-                maxWidth: "100%",
-                maxHeight: "100%",
-              }}
-            >
-              <g
+          <div style={{ ...divStyles, left: styles1 }}>
+            <SvgOuter id="svg-1" svgWidth={svgWidth} svgHeight={svgHeight}>
+              <LayerGroup
+                includeLayerBackgrounds={params.includeLayerBackgrounds}
                 id="group-1"
-                fill={params.bgColour}
-                fontFamily="Dancing Script"
-                textAnchor="start"
-                alignmentBaseline="hanging"
-              >
-                {layers[0].map((grp, i) => (
-                  <text
-                    key={`g5-${i}`}
-                    x={grp.x}
-                    y={grp.y}
-                    fontSize={grp.fontSize}
-                  >
-                    {grp.character}
-                  </text>
-                ))}
-              </g>
-            </svg>
+                colour={params.bgColour}
+                layerData={layers[0]}
+                svgWidth={svgWidth}
+                svgHeight={svgHeight}
+              />
+            </SvgOuter>
           </div>
         )}
 
         {/* SVG 2 */}
         {params.showLayer2 && (
-          <div style={{ ...styles, left: styles2 }}>
-            <svg
-              id="svg-2"
-              viewBox={`0 0 ${svgWidth} ${svgHeight}`}
-              xmlns="http://www.w3.org/2000/svg"
-              style={{
-                maxWidth: "100%",
-                maxHeight: "100%",
-              }}
-            >
-              <g
+          <div style={{ ...divStyles, left: styles2 }}>
+            <SvgOuter id="svg-2" svgWidth={svgWidth} svgHeight={svgHeight}>
+              <LayerGroup
+                includeLayerBackgrounds={params.includeLayerBackgrounds}
                 id="group-2"
-                fill={params.lightColour}
-                fontFamily="Dancing Script"
-                textAnchor="start"
-                alignmentBaseline="hanging"
-              >
-                {layers[1].map((grp, i) => (
-                  <text
-                    key={`g2-${i}`}
-                    x={grp.x}
-                    y={grp.y}
-                    fontSize={grp.fontSize}
-                  >
-                    {grp.character}
-                  </text>
-                ))}
-              </g>
-            </svg>
+                colour={params.lightColour}
+                layerData={layers[1]}
+                svgWidth={svgWidth}
+                svgHeight={svgHeight}
+              />
+            </SvgOuter>
           </div>
         )}
 
         {/* SVG 3 */}
         {params.showLayer3 && (
-          <div style={{ ...styles, left: styles3 }}>
-            <svg
-              id="svg-3"
-              viewBox={`0 0 ${svgWidth} ${svgHeight}`}
-              xmlns="http://www.w3.org/2000/svg"
-              style={{
-                maxWidth: "100%",
-                maxHeight: "100%",
-              }}
-            >
-              <g
+          <div style={{ ...divStyles, left: styles3 }}>
+            <SvgOuter id="svg-3" svgWidth={svgWidth} svgHeight={svgHeight}>
+              <LayerGroup
+                includeLayerBackgrounds={params.includeLayerBackgrounds}
                 id="group-3"
-                fill={params.lightColour}
-                fontFamily="Dancing Script"
-                textAnchor="start"
-                alignmentBaseline="hanging"
-              >
-                {layers[2].map((grp, i) => (
-                  <text
-                    key={`g3-${i}`}
-                    x={grp.x}
-                    y={grp.y}
-                    fontSize={grp.fontSize}
-                  >
-                    {grp.character}
-                  </text>
-                ))}
-              </g>
-            </svg>
+                colour={params.lightColour}
+                layerData={layers[2]}
+                svgWidth={svgWidth}
+                svgHeight={svgHeight}
+              />
+            </SvgOuter>
           </div>
         )}
 
         {/* SVG 4 */}
         {params.showLayer4 && (
-          <div style={{ ...styles, left: styles4 }}>
-            <svg
-              id="svg-4"
-              viewBox={`0 0 ${svgWidth} ${svgHeight}`}
-              xmlns="http://www.w3.org/2000/svg"
-              style={{
-                maxWidth: "100%",
-                maxHeight: "100%",
-              }}
-            >
-              <g
+          <div style={{ ...divStyles, left: styles4 }}>
+            <SvgOuter id="svg-4" svgWidth={svgWidth} svgHeight={svgHeight}>
+              <LayerGroup
+                includeLayerBackgrounds={params.includeLayerBackgrounds}
                 id="group-4"
-                fill={params.lightColour}
-                fontFamily="Dancing Script"
-                textAnchor="start"
-                alignmentBaseline="hanging"
-              >
-                {layers[3].map((grp, i) => (
-                  <text
-                    key={`g4-${i}`}
-                    x={grp.x}
-                    y={grp.y}
-                    fontSize={grp.fontSize}
-                  >
-                    {grp.character}
-                  </text>
-                ))}
-              </g>
-            </svg>
+                colour={params.lightColour}
+                layerData={layers[3]}
+                svgWidth={svgWidth}
+                svgHeight={svgHeight}
+              />
+            </SvgOuter>
           </div>
         )}
 
         {/* SVG 5 */}
         {params.showLayer5 && (
-          <div style={{ ...styles }}>
-            <svg
-              id="svg-5"
-              viewBox={`0 0 ${svgWidth} ${svgHeight}`}
-              xmlns="http://www.w3.org/2000/svg"
-              style={{
-                maxWidth: "100%",
-                maxHeight: "100%",
-              }}
-            >
-              <g
+          <div style={{ ...divStyles }}>
+            <SvgOuter id="svg-5" svgWidth={svgWidth} svgHeight={svgHeight}>
+              <LayerGroup
+                includeLayerBackgrounds={params.includeLayerBackgrounds}
                 id="group-5"
-                fill={params.lightColour}
-                fontFamily="Dancing Script"
-                textAnchor="start"
-                alignmentBaseline="hanging"
-              >
-                {layers[4].map((grp, i) => (
-                  <text
-                    key={`g5-${i}`}
-                    x={grp.x}
-                    y={grp.y}
-                    fontSize={grp.fontSize}
-                  >
-                    {grp.character}
-                  </text>
-                ))}
-              </g>
-            </svg>
+                colour={params.lightColour}
+                layerData={layers[4]}
+                svgWidth={svgWidth}
+                svgHeight={svgHeight}
+              />
+            </SvgOuter>
           </div>
         )}
       </div>
     </div>
   );
 }
+
+const SvgOuter = ({ children, svgWidth, svgHeight, id }) => {
+  return (
+    <svg
+      id={id}
+      viewBox={`0 0 ${svgWidth} ${svgHeight}`}
+      xmlns="http://www.w3.org/2000/svg"
+      width={svgWidth}
+      height={svgHeight}
+      style={{
+        maxWidth: "100%",
+        maxHeight: "100%",
+      }}
+    >
+      {children}
+    </svg>
+  );
+};
+
+const LayerGroup = ({
+  includeLayerBackgrounds,
+  colour,
+  layerData,
+  svgWidth,
+  svgHeight,
+  id,
+}) => {
+  return (
+    <g>
+      {includeLayerBackgrounds && (
+        <rect x={0} y={0} width={svgWidth} height={svgHeight} fill="red" />
+      )}
+      <g
+        id={id}
+        fill={colour}
+        fontFamily="Xanh Mono"
+        fontStyle="italic"
+        textAnchor="start"
+      >
+        {layerData.map((grp, i) => (
+          <text key={`g5-${i}`} x={grp.x} y={grp.y} fontSize={grp.fontSize}>
+            <tspan alignmentBaseline="hanging">{grp.character}</tspan>
+          </text>
+        ))}
+      </g>
+    </g>
+  );
+};
 
 const getLayerData = (inputCanvas, params, words) => {
   const { cellSize, lightColour, bgColour, brightnessSplit } = params;
@@ -267,7 +243,7 @@ const getLayerData = (inputCanvas, params, words) => {
 
   const letters = words.split("");
   let currLetterIndex = 0;
-  const maxFontSize = cellSize * 1.8;
+  const maxFontSize = cellSize * 1.1;
 
   const layerLetterCounts = [0, 0, 0, 0];
 

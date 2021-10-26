@@ -29,7 +29,8 @@ const App = () => {
       image.onload = () => {
         setSourceImg(image);
       };
-      image.src = "img/pic-5.png";
+      image.src = "img/pic-5-final-adjustments.png";
+      // image.src = "img/pic-5.png";
     }
   }, [sourceImg]);
 

@@ -38,7 +38,11 @@ export const createBlockCanvas = (inputCanvas, params, words) => {
 
   const letters = words.split("");
   let currLetterIndex = 0;
-  const maxFontSize = cellSize * 1.8;
+  const maxFontSize = (cellSize * 1.15).toFixed(2);
+  let smallestFontSize = 9999;
+
+  const minFontSize = 2;
+  const fontSizeRange = maxFontSize - minFontSize;
 
   const layerLetterCounts = [0, 0, 0, 0];
 
@@ -58,6 +62,9 @@ export const createBlockCanvas = (inputCanvas, params, words) => {
       let fontColour;
       let targCtx;
 
+      fontSize = (minFontSize + fontSizeRange * decimalPercentage).toFixed(2);
+      fontColour = lightColour;
+
       if (a <= 200 && decimalPercentage <= 0.01) {
         targCtx = outputCtx1;
         fontSize = maxFontSize;
@@ -65,43 +72,44 @@ export const createBlockCanvas = (inputCanvas, params, words) => {
       } else if (decimalPercentage < brightnessSplit[0]) {
         layerLetterCounts[0]++;
         targCtx = outputCtx2;
-        fontSize = maxFontSize * decimalPercentage;
-        fontColour = lightColour;
       } else if (decimalPercentage < brightnessSplit[1]) {
         layerLetterCounts[1]++;
         targCtx = outputCtx3;
-        fontSize = maxFontSize * decimalPercentage;
-        fontColour = lightColour;
       } else if (decimalPercentage < brightnessSplit[2]) {
         layerLetterCounts[2]++;
         targCtx = outputCtx4;
-        fontSize = maxFontSize * decimalPercentage;
-        fontColour = lightColour;
       } else {
         layerLetterCounts[3]++;
         targCtx = outputCtx5;
-        fontSize = maxFontSize * decimalPercentage;
-        fontColour = lightColour;
       }
 
       if (targCtx) {
-        const character = letters[currLetterIndex];
+        let character = letters[currLetterIndex];
         currLetterIndex++;
-        if (currLetterIndex >= letters.length) currLetterIndex = 0;
+        if (currLetterIndex >= letters.length) {
+          currLetterIndex = 0;
+          // character = "8";
+        }
 
-        targCtx.fillStyle = fontColour;
         targCtx.save();
         targCtx.beginPath();
-        targCtx.translate(x * cellSize, y * cellSize);
+        targCtx.translate(x * cellSize, cellSize + y * cellSize);
 
-        targCtx.font = `${fontSize}px 'Dancing Script'`;
+        targCtx.fillStyle = fontColour;
+        targCtx.font = `italic ${fontSize}px 'Xanh Mono'`;
         targCtx.fillText(character, 0, 0);
         targCtx.fill();
         targCtx.restore();
+
+        if (fontSize < smallestFontSize && fontSize > 0) {
+          console.log("smallestFontSize: ", smallestFontSize);
+          smallestFontSize = fontSize;
+        }
       }
     }
   }
 
+  console.log("smallestFontSize: ", smallestFontSize);
   console.log("layerLetterCounts: ", layerLetterCounts);
   const total =
     layerLetterCounts[0] +

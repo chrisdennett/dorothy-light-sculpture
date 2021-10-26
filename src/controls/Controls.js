@@ -10,6 +10,12 @@ import {
 
 // http://localhost:3000/?bgColour=%23414141&brightnessAdjust=0&brightnessSplit=0.45&brightnessSplit=0.69&brightnessSplit=0.82&canvas1X=-1&canvasWidth=235&cellSize=9&contrast=10&cropBottom=1&cropLeft=0.1&cropRight=0.9&cropTop=0&image=pic-5.png&lightColour=%23f5f2f2&outputType=canvas&showLayer1=1&showLayer2=1&showLayer3=1&showLayer4=1&showLayer5=1&viewSize=fullSize
 
+// full size
+//http://localhost:3000/?bgColour=%23000000&brightnessAdjust=0&brightnessSplit=0.45&brightnessSplit=0.7&brightnessSplit=0.82&canvas1X=0&canvasWidth=210&cellSize=12&contrast=10&cropBottom=1&cropLeft=0.1&cropRight=0.9&cropTop=0&includeLayerBackgrounds=1&lightColour=%23000000&outputType=svg&showLayer1=1&showLayer2=1&showLayer3=1&showLayer4=1&showLayer5=1&viewSize=fullSize
+
+// full size 12 cellsize x 175
+// http://localhost:3000/?bgColour=%23000000&brightnessAdjust=0&brightnessSplit=0.45&brightnessSplit=0.7&brightnessSplit=0.82&canvas1X=0&canvasWidth=175&cellSize=12&contrast=10&cropBottom=1&cropLeft=0.1&cropRight=0.9&cropTop=0&includeLayerBackgrounds=0&lightColour=%23f5f5f5&outputType=canvas&showLayer1=1&showLayer2=1&showLayer3=1&showLayer4=1&showLayer5=1&viewSize=fitToHeight
+
 export default function Controls({ showControls = true, onChange }) {
   const [query, setQuery] = useQueryParams({
     canvasWidth: NumberParam,

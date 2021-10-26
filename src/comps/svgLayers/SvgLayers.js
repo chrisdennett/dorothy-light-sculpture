@@ -84,6 +84,7 @@ export default function SvgLayers({ inputCanvas, params }) {
                 key={i}
                 includeLayerBackgrounds={params.includeLayerBackgrounds}
                 id={`full-group-${i + 1}`}
+                layerNumber={i + 1}
                 colour={i === 0 ? params.bgColour : params.lightColour}
                 layerData={layerData}
                 svgWidth={svgWidth}
@@ -199,12 +200,13 @@ const LayerGroup = ({
   includeLayerBackgrounds,
   colour,
   layerData,
+  layerNumber,
   svgWidth,
   svgHeight,
   id,
 }) => {
   return (
-    <g>
+    <g label={`Layer ${layerNumber}`}>
       {includeLayerBackgrounds && (
         <rect x={0} y={0} width={svgWidth} height={svgHeight} fill="red" />
       )}
@@ -214,10 +216,16 @@ const LayerGroup = ({
         fontFamily="Xanh Mono"
         fontStyle="italic"
         textAnchor="start"
+        //alignmentBaseline="hanging"
       >
         {layerData.map((grp, i) => (
-          <text key={`g5-${i}`} x={grp.x} y={grp.y} fontSize={grp.fontSize}>
-            <tspan alignmentBaseline="hanging">{grp.character}</tspan>
+          <text
+            key={`g5-${i}`}
+            x={grp.x}
+            y={grp.y + grp.fontSize}
+            fontSize={grp.fontSize}
+          >
+            <tspan>{grp.character}</tspan>
           </text>
         ))}
       </g>
@@ -315,8 +323,8 @@ const getLayerData = (inputCanvas, params, words) => {
   const idealLayerTally = Math.round(total / 4);
   console.log("idealLayerTally: ", idealLayerTally);
 
-  const canvasWidth = inputW;
-  const canvasHeight = inputH;
+  const canvasWidth = inputW * cellSize;
+  const canvasHeight = inputH * cellSize;
 
   const widthInMM = Math.round(canvasWidth * 0.2645833333);
   const heightInMM = Math.round(canvasHeight * 0.2645833333);

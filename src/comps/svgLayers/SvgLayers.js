@@ -254,6 +254,7 @@ const getLayerData = (inputCanvas, params, words) => {
   const maxFontSize = cellSize * 1.1;
 
   const layerLetterCounts = [0, 0, 0, 0];
+  let vOffset = 0;
 
   for (let y = 0; y < inputH; y++) {
     for (let x = 0; x < inputW; x++) {
@@ -302,9 +303,11 @@ const getLayerData = (inputCanvas, params, words) => {
         currLetterIndex++;
         if (currLetterIndex >= letters.length) currLetterIndex = 0;
 
+        vOffset = maxFontSize - fontSize;
+
         targetGroup.push({
           x: x * cellSize,
-          y: y * cellSize,
+          y: vOffset + y * cellSize,
           fontSize,
           character,
           fontColour,
